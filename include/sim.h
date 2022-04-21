@@ -2,10 +2,12 @@
 // Created by znf on 4/13/22.
 //
 
-#ifndef FINAL_PROJECT_SAMUELZNF_SIM_H
-#define FINAL_PROJECT_SAMUELZNF_SIM_H
+#pragma once
 #include "species.h"
 #include "animal.h"
+#include "cinder/gl/gl.h"
+using glm::vec2;
+
 
 namespace petSimulator {
     class Container {
@@ -16,6 +18,7 @@ namespace petSimulator {
     public:
         Container();
 
+        vector<Animal> getAnimals();
         void Display() const;
         void AdvanceOneFrame();
         void AddAnimal(Animal animal_to_add);
@@ -23,4 +26,3 @@ namespace petSimulator {
         void setTemperature(double rate);
     };
 }
-#endif //FINAL_PROJECT_SAMUELZNF_SIM_H

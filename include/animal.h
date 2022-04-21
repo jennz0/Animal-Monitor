@@ -2,9 +2,6 @@
 // Created by znf on 4/14/22.
 //
 
-#ifndef IDEAL_GAS_ANIMAL_H
-#define IDEAL_GAS_ANIMAL_H
-
 #include "vector"
 #include <string>
 #include <stdio.h>
@@ -24,12 +21,8 @@ namespace petSimulator {
         Status status;
 
     public:
-        Animal (int setid, int setgender, Species setSpecies, Status setStatus);
+        Animal(int setid, int setgender, Species species, Status status);
         Species getSpecies();
         Status getStatus();
     };
 }
-
-
-
-#endif //IDEAL_GAS_ANIMAL_H
