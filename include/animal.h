@@ -1,7 +1,7 @@
 //
 // Created by znf on 4/14/22.
 //
-
+#pragma once
 #include "vector"
 #include <string>
 #include <stdio.h>

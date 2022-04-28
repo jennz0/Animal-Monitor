@@ -15,14 +15,20 @@ namespace petSimulator {
         vector<Animal> animals;
         double hunt_success_rate;
         double temperature;
+
+        cinder::gl::Texture2dRef mTex;
+        cinder::gl::Texture2dRef mTex1;
+        cinder::gl::Texture2dRef mTex2;
     public:
         Container();
 
         vector<Animal> getAnimals();
-        void Display() const;
+        void Display();
         void AdvanceOneFrame();
         void AddAnimal(Animal animal_to_add);
         void setRate(double rate);
         void setTemperature(double rate);
+
+        void setup();
     };
 }

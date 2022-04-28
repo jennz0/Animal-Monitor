@@ -2,6 +2,7 @@
 // Created by znf on 4/13/22.
 //
 
+#include <cinder/app/AppBase.h>
 #include "sim.h"
 
 namespace petSimulator {
@@ -25,11 +26,37 @@ namespace petSimulator {
     vector<Animal> Container::getAnimals() {
         return this->animals;
     }
-    void Container::Display() const {
-        ci::gl::color(ci::Color("red"));
-        ci::gl::drawSolidRect(ci::Rectf(vec2(600, 350), vec2(900, 500)));
+
+    void Container::setup()
+    {
+        auto img = loadImage( cinder::app::loadAsset( "zebra.png" ) );
+        auto img1 = loadImage( cinder::app::loadAsset( "bison.png" ) );
+        auto img2 = loadImage( cinder::app::loadAsset( "lion.png" ) );
+
+        mTex = cinder::gl::Texture2d::create(img);
+        mTex1 = cinder::gl::Texture2d::create(img1);
+        mTex2 = cinder::gl::Texture2d::create(img2);
+    }
+
+    void Container::Display() {
+        ci::gl::color(ci::Color("blue"));
+        ci::gl::drawSolidEllipse(vec2(600, 350), 100.0f, 50.0f);
+        ci::gl::drawSolidEllipse(vec2(400, 150), 80.0f, 50.0f);
+
+        ci::gl::setMatricesWindow(cinder::app::getWindowSize());
+        ci::gl::pushModelMatrix();
+        ci::gl::translate(20,20);
+        ci::gl::scale(0.2f,0.2f);
+        ci::gl::color(ci::Color("white"));
+        //Container::setup();
+        auto img1 = loadImage( cinder::app::loadAsset( "bison.png" ) );
+        mTex1 = cinder::gl::Texture2d::create(img1);
+
+        cinder::gl::draw(mTex1);
+//        ci::gl::popModelMatrix();
     }
     void Container::AdvanceOneFrame() {
+
 //        for (Animal animal: this->animals) {
 //            Status animal_status = animal.getStatus();
 //            if (animal_status.getCurHunger() < animal_status.getIdealHunger()) {
