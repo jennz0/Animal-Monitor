@@ -5,7 +5,8 @@
 #include "animal.h"
 
 namespace petSimulator {
-    Animal::Animal(int setid, int setgender, Species species, Status status) : species(species), status(status) {
+    Animal::Animal(int setid, int setgender, Species species, Status status, Motion motion) : species(species), status(status),
+                                                                                              motion(motion) {
         this-> id = setid;
         //this-> status = status1;
         this->gender = setgender;
@@ -19,5 +20,13 @@ namespace petSimulator {
     }
 
     Species Animal::getSpecies() {return this->species;}
-    //Status Animal::getStatus() {return this->status;}
+    Motion Animal::getMotion() {return this->motion;}
+    Status Animal::getStatus() {return this->status;}
+
+    void Animal::setMotion(vec2 pos, vec2 vel) {
+        std::cout <<22;
+
+        this->motion.setPosition(pos);
+        this->motion.setVelocity(vel);
+    }
 }

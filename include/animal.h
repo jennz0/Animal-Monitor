@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include "species.h"
 #include "status.h"
+#include "motion.h"
 
 using std::string;
 using std::vector;
@@ -19,10 +20,14 @@ namespace petSimulator {
         int gender;
         Species species;
         Status status;
+        Motion motion;
 
     public:
-        Animal(int setid, int setgender, Species species, Status status);
+        Animal(int setid, int setgender, Species species, Status status, Motion motion);
         Species getSpecies();
         Status getStatus();
+        Motion getMotion();
+
+        void setMotion(vec2 pos, vec2 vel);
     };
 }

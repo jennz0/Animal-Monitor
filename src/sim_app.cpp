@@ -7,9 +7,10 @@ namespace petSimulator {
     PetSimulator::PetSimulator() {
         Species spec1 = Species("zebra", 30);
         Status state1 = Status(100, 30, 60,0, 100, 20, 60,0);
-        Animal toadd = Animal(0, 0, spec1, state1);
+        Motion motion1 = Motion(vector<double>(100.0,100.0), vector<double>(2.0, 2.0));
+        Animal toadd = Animal(0, 0, spec1, state1, motion1);
 
-        //this->container_->AddAnimal(toadd);
+        this->animals.push_back(toadd);
         //std::cout<< this->container_->getAnimals().size() << std::endl;
         ci::app::setWindowSize(kWindowSize, kWindowSize);
     }
@@ -32,6 +33,7 @@ namespace petSimulator {
         this->Display();
         this->DisplayString();
         this->Legends();
+
 
     }
 
@@ -70,6 +72,21 @@ namespace petSimulator {
 
         ci::gl::color(ci::Color("white"));
 
+        for (Animal ani : animals) {
+            if (ani.getSpecies().getSpecies().compare("zebra") == 0) {
+                ci::gl::color(ci::Color("white"));
+                ci::gl::drawSolidCircle(ani.getMotion().getPosition(), 20.0);
+            }
+            if (ani.getSpecies().getSpecies().compare("lion") == 0) {
+                ci::gl::color(ci::Color("orange"));
+                ci::gl::drawSolidCircle(ani.getMotion().getPosition(), 20.0);
+            }
+            if (ani.getSpecies().getSpecies().compare("bison") == 0) {
+                ci::gl::color(ci::Color("brown"));
+                ci::gl::drawSolidCircle(ani.getMotion().getPosition(), 20.0);
+            }
+        }
+
     }
     void PetSimulator::DisplayString() {
         ci::gl::color(ci::Color("white"));
@@ -93,14 +110,20 @@ namespace petSimulator {
         cinder::gl::draw(mTex);
 
         ci::gl::scale(0.25f,0.15f);
-        ci::gl::translate(0,800);
+        ci::gl::translate(0,5800);
 
         cinder::gl::draw(mTex2);
 
         ci::gl::popModelMatrix();
     }
     void PetSimulator::AdvanceOneFrame() {
-
+        std::cout << 11;
+        for (Animal ani : this -> animals) {
+            std::cout << ani.getMotion().getPosition();
+            //std::cout << ani.getMotion().getPosition() + ani.getMotion().getVelocity();
+            ani.getMotion().accumulate(ani.getMotion().getVelocity());
+            ani.setMotion(ani.getMotion().getPosition() + ani.getMotion().getVelocity(), ani.getMotion().getVelocity());
+        }
 //        for (Animal animal: this->animals) {
 //            Status animal_status = animal.getStatus();
 //            if (animal_status.getCurHunger() < animal_status.getIdealHunger()) {
