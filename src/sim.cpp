@@ -32,6 +32,7 @@ namespace petSimulator {
             this->animals.push_back(toadd);
         }
         std::cout << this->animals[0].motion.velocity << std::endl;
+        this -> temperature = 35;
     }
 
 
@@ -39,40 +40,91 @@ namespace petSimulator {
         this->animals.push_back(animal_to_add);
     }
 
-//    void Container::setRate(double rate) {
-//        this-> hunt_success_rate = rate;
-//    }
-//
-//    void Container::setTemperature(double rate) {
-//        this->temperature = rate;
-//    }
+    void Container::setRate(double rate) {
+        this-> hunt_success_rate = rate;
+    }
+
+    void Container::setTemperature(double rate) {
+        this->temperature = rate;
+    }
 
     vector<Animal> Container::getAnimals() {
         return this->animals;
     }
+    void Container::hunt(Animal current_animal) {
+        string animal_species = current_animal.getSpecies().getSpecies();
+        Status animal_status = current_animal.getStatus();
+        if (animal_status.getCurHunger() < animal_status.getIdealHunger() && animal_species.compare("lion") == 0) {
+            //hunt for the nearest prey with 1.5speed
+            for (int j = 0; j < this->animals.size(); j++) {
+                string prey_species = animals[j].getSpecies().getSpecies();
+                if (prey_species.compare("bison") || prey_species.compare("zebra")) {
+                    vec2 target_coord = animals[j].motion.position;
+                    vec2 direction = target_coord - current_animal.motion.position;
+                    if (direction.length() <= 100) {
+                        current_animal.getStatus().setCurHunger(current_animal.getStatus().getMaxHunger());
+                        animals[j].getStatus().setAlive();
+                        break;
+                    }
+                    direction /= sqrt(direction[0]*direction[0] + direction[1]*direction[1]);
+                    direction *= 1.5;
+                    current_animal.motion.velocity = direction;
+                }
+            }
+        }
+    }
+
+    vec2 Container::findNearPond(vec2 cur_pos) {
+        double dist1 = (vec2(200, 520)-cur_pos).length();
+        double dist2 = (vec2(500, 150)-cur_pos).length();
+        if (dist1 < dist2) {
+            return vec2(200, 520);
+        }
+        return vec2(500, 150);
+    }
 
     void Container::AdvanceOneFrame() {
 
-        for (Animal ani : this -> animals) {
+        for (int i = 0; i < this->animals.size(); i++) {
+            Animal ani = animals[i];
             Status animal_status = ani.getStatus();
-            if (animal_status.getCurHunger() < animal_status.getIdealHunger()) {
-                //hunt for the nearest prey with 1.5speed
+            if (!animal_status.getAlive()) {
+                this->animals.erase(animals.begin() + i);
+                continue;
             }
+            this->hunt(ani);
             if (animal_status.getCurThirst() < animal_status.getIdealThirst()) {
                 //go for water source
+                vec2 direction = findNearPond(ani.motion.position) - ani.motion.position;
+                if (direction.length() <= 100) {
+                    ani.getStatus().setCurThirst(ani.getStatus().getMaxThirst());
+                    continue;
+                }
+                direction /= sqrt(direction[0]*direction[0] + direction[1]*direction[1]);
+                direction *= 1.5;
+                ani.motion.velocity = direction;
             }
             if (this->temperature >= ani.getSpecies().getTemp()) {
                 //go for reproducing
             }
-            std::cout << ani.getMotion().getPosition();
-            //std::cout << ani.getMotion().getPosition() + ani.getMotion().getVelocity();
+            //std::cout << ani.getMotion().getPosition();
 
             ani.motion.position[0] += ani.motion.velocity[0];
             ani.motion.position[1] += ani.motion.velocity[1];
-            std::cout << ani.motion.position;
+            //std::cout << ani.motion.position;
 
             ani.setMotion(ani.motion.velocity, ani.motion.velocity);
             std::cout << ani.motion.position << std::endl;
+
+            if (ani.motion.position[0] <= 100 || ani.motion.position[0] >= 650) {
+                ani.motion.velocity[0] *= -1;
+            }
+            if (ani.motion.position[1] <= 100 || ani.motion.position[1] >= 650) {
+                ani.motion.velocity[1] *= -1;
+            }
+            ani.getStatus().setCurThirst(ani.getStatus().getCurThirst()-5);
+            ani.getStatus().setCurHunger(ani.getStatus().getCurHunger()-5);
+
         }
     }
 
