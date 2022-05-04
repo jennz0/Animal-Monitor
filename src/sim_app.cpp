@@ -6,17 +6,23 @@
 namespace petSimulator {
     PetSimulator::PetSimulator() {
         Species spec1 = Species("zebra", 30);
-        Status state1 = Status(100, 30, 60,0, 100, 20, 60,0);
-        Motion motion1 = Motion(vector<double>(100.0,100.0), vector<double>(2.0, 2.0));
-        Animal toadd = Animal(0, 0, spec1, state1, motion1);
+        Species spec2 = Species("lion", 30);
+        Species spec3 = Species("bison", 30);
 
-        this->animals.push_back(toadd);
-        //std::cout<< this->container_->getAnimals().size() << std::endl;
+        Status default_state = Status(100, 30, 60,0, 100, 20, 60,0);
+        Motion motion1 = Motion(vector<double>{300.0,300.0}, vector<double>{3.0, 3.0});
+        Animal toadd = Animal(0, 0, spec1, default_state, motion1);
+
+        this->container_ = new Container(spec1, spec2, spec3, default_state);
+        this->container_->AddAnimal(toadd);
+        std::cout<< this->container_->getAnimals().size() << std::endl;
         ci::app::setWindowSize(kWindowSize, kWindowSize);
     }
 
     void PetSimulator::setup()
     {
+        auto grass = loadImage( cinder::app::loadAsset( "grass.png" ) );
+
         auto img = loadImage( cinder::app::loadAsset( "zebra.png" ) );
         auto img1 = loadImage( cinder::app::loadAsset( "bison.png" ) );
         auto img2 = loadImage( cinder::app::loadAsset( "lion.png" ) );
@@ -24,6 +30,8 @@ namespace petSimulator {
         mTex = cinder::gl::Texture2d::create(img);
         mTex1 = cinder::gl::Texture2d::create(img1);
         mTex2 = cinder::gl::Texture2d::create(img2);
+        mTex3 = cinder::gl::Texture2d::create(grass);
+
     }
 
     void PetSimulator::draw() {
@@ -33,16 +41,12 @@ namespace petSimulator {
         this->Display();
         this->DisplayString();
         this->Legends();
-
+        //this->DisplayGrass();
 
     }
 
     void PetSimulator::update() {
-        this->AdvanceOneFrame();
-    }
-
-    void PetSimulator::AddAnimal(Animal animal_to_add) {
-        this-> animals.push_back(animal_to_add);
+        this->container_->AdvanceOneFrame();
     }
 
     void PetSimulator::setRate(double rate) {
@@ -53,12 +57,6 @@ namespace petSimulator {
         this->temperature = rate;
     }
 
-    vector<Animal> PetSimulator::getAnimals() {
-        return this->animals;
-    }
-
-
-
     void PetSimulator::Display() {
         ci::gl::color(ci::Color("green"));
 
@@ -68,14 +66,16 @@ namespace petSimulator {
         ci::gl::drawSolidEllipse(vec2(500, 150), 80.0f, 50.0f);
 
         ci::gl::setMatricesWindow(cinder::app::getWindowSize());
-        ci::gl::pushModelMatrix();
+        ci::gl::color(ci::Color("white"));
+
+        //ci::gl::pushModelMatrix();
 
         ci::gl::color(ci::Color("white"));
 
-        for (Animal ani : animals) {
+        for (Animal ani : this->container_->getAnimals()) {
             if (ani.getSpecies().getSpecies().compare("zebra") == 0) {
                 ci::gl::color(ci::Color("white"));
-                ci::gl::drawSolidCircle(ani.getMotion().getPosition(), 20.0);
+                ci::gl::drawSolidCircle(ani.motion.position, 20.0);
             }
             if (ani.getSpecies().getSpecies().compare("lion") == 0) {
                 ci::gl::color(ci::Color("orange"));
@@ -90,9 +90,13 @@ namespace petSimulator {
     }
     void PetSimulator::DisplayString() {
         ci::gl::color(ci::Color("white"));
-        //ci::gl::scale(10.0f,10.0f);
-
         ci::gl::drawString("Legends", vec2(800, 30));
+    }
+
+    void PetSimulator::DisplayGrass() {
+        ci::gl::scale(0.1f,0.1f);
+        cinder::gl::draw(mTex3);
+        ci::gl::translate(0,800);
     }
     void PetSimulator::Legends() {
 
@@ -114,28 +118,8 @@ namespace petSimulator {
 
         cinder::gl::draw(mTex2);
 
+
         ci::gl::popModelMatrix();
     }
-    void PetSimulator::AdvanceOneFrame() {
-        std::cout << 11;
-        for (Animal ani : this -> animals) {
-            std::cout << ani.getMotion().getPosition();
-            //std::cout << ani.getMotion().getPosition() + ani.getMotion().getVelocity();
-            ani.getMotion().accumulate(ani.getMotion().getVelocity());
-            ani.setMotion(ani.getMotion().getPosition() + ani.getMotion().getVelocity(), ani.getMotion().getVelocity());
-        }
-//        for (Animal animal: this->animals) {
-//            Status animal_status = animal.getStatus();
-//            if (animal_status.getCurHunger() < animal_status.getIdealHunger()) {
-//                //hunt for the nearest prey with 1.5speed
-//            }
-//            if (animal_status.getCurThirst() < animal_status.getIdealThirst()) {
-//                //go for water source
-//            }
-//            if (this->temperature >= animal.getSpecies().getTemp()) {
-//                //go for reproducing
-//            }
 
-//        }
-    }
 }

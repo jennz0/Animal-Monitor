@@ -18,7 +18,7 @@ class PetSimulator : public ci::app::App {
 
         vector<Animal> getAnimals();
         void Display();
-        void AdvanceOneFrame();
+        //void AdvanceOneFrame();
         void AddAnimal(Animal animal_to_add);
         void setRate(double rate);
         void setTemperature(double rate);
@@ -32,7 +32,7 @@ class PetSimulator : public ci::app::App {
 
 
 private:
-        //Container* container_;
+        Container* container_;
 
         vector<Animal> animals;
         double hunt_success_rate;
@@ -41,10 +41,14 @@ private:
         cinder::gl::Texture2dRef mTex;
         cinder::gl::Texture2dRef mTex1;
         cinder::gl::Texture2dRef mTex2;
+        cinder::gl::Texture2dRef mTex3;
+
 
     void Legends();
 
     void DisplayString();
+
+    void DisplayGrass();
 };
 
 }

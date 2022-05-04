@@ -11,5 +11,6 @@ void prepareSettings(petSimulator::PetSimulator::Settings* settings) {
     settings->setResizable(false);
 }
 
+//PetSimulator tmp = PetSimulator();
 // This line is a macro that expands into an "int main()" function.
 CINDER_APP(PetSimulator, ci::app::RendererGl, prepareSettings);

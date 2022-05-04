@@ -16,7 +16,6 @@ namespace petSimulator {
         this->velocity = vec2(vel[0],vel[1]);
     }
     void Motion::setPosition(vec2 pos) {
-        std::cout << 77 << std::endl;
         this->position += pos;//vec2(pos[0],pos[1]);
     }
     void Motion::accumulate(vec2 vel) {

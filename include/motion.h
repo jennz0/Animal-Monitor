@@ -19,10 +19,11 @@ using std::vector;
 namespace petSimulator {
     class Motion {
     protected:
-        vec2 position;
-        vec2 velocity;
+
 
     public:
+        vec2 position;
+        vec2 velocity;
         Motion(vector<double> pos, vector<double> vel);
         void setVelocity(vec2 vel);
         void setPosition(vec2 pos);

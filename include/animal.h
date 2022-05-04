@@ -20,9 +20,10 @@ namespace petSimulator {
         int gender;
         Species species;
         Status status;
-        Motion motion;
 
     public:
+        Motion motion;
+
         Animal(int setid, int setgender, Species species, Status status, Motion motion);
         Species getSpecies();
         Status getStatus();

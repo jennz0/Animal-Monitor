@@ -52,7 +52,8 @@ list(APPEND SOURCE_FILES src/motion.cpp
                          src/sim_app.cpp
                          src/animal.cpp
                          src/species.cpp
-                         src/status.cpp)
+                         src/status.cpp
+                         src/sim.cpp)
 
 list(APPEND TEST_FILES tests/test.cpp)
 
