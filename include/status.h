@@ -2,8 +2,7 @@
 // Created by znf on 4/14/22.
 //
 
-#ifndef IDEAL_GAS_HUNGER_H
-#define IDEAL_GAS_HUNGER_H
+#pragma once
 
 #include "vector"
 #include <string>
@@ -63,4 +62,3 @@ namespace petSimulator {
     };
 }
 
-#endif //IDEAL_GAS_HUNGER_H

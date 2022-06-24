@@ -1,16 +1,14 @@
 //
 // Created by znf on 4/14/22.
 //
-
-#ifndef IDEAL_GAS_ANIMAL_H
-#define IDEAL_GAS_ANIMAL_H
-
+#pragma once
 #include "vector"
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
 #include "species.h"
 #include "status.h"
+#include "motion.h"
 
 using std::string;
 using std::vector;
@@ -24,12 +22,13 @@ namespace petSimulator {
         Status status;
 
     public:
-        Animal (int setid, int setgender, Species setSpecies, Status setStatus);
+        Motion motion;
+
+        Animal(int setid, int setgender, Species species, Status status, Motion motion);
         Species getSpecies();
         Status getStatus();
+        Motion getMotion();
+
+        void setMotion(vec2 pos, vec2 vel);
     };
 }
-
-
-
-#endif //IDEAL_GAS_ANIMAL_H

@@ -5,7 +5,7 @@
 #include "status.h"
 
 namespace petSimulator {
-    Status::Status (int setIdealHunger, int setMaxHunger, int setCurHunger, int setCurThirst, int setMinHunger, int setIdealThirst, int setMaxThirst, int setMinThirst) {
+    Status::Status ( int setMaxHunger,int setIdealHunger, int setCurHunger, int setMinHunger,int setMaxThirst, int setIdealThirst, int setCurThirst,  int setMinThirst) {
         this->alive = true;
         this-> current_hunger = setCurHunger;
         this -> current_thirst = setCurThirst;
